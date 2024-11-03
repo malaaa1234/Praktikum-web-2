@@ -9,8 +9,7 @@ class User_model extends CI_Model
     return $this->db->where('is_active', 1)->get($this->_table)->result();
   }
 
-  public function save()
-  {
+  public function save(){
     $data = array(
       'nik' => htmlspecialchars($this->input->post('nik'), true),
       'username' => htmlspecialchars($this->input->post('username'), true),
@@ -22,7 +21,7 @@ class User_model extends CI_Model
       'role' => htmlspecialchars($this->input->post('role'), true),
       'is_active' => 1,
     );
-    return $this->db->insert($this->_table, $data);
+    return $this->db->insert($this->_table,$data);
   }
 
   public function getById($id)
@@ -42,29 +41,14 @@ class User_model extends CI_Model
       'role' => htmlspecialchars($this->input->post('role'), true),
       'is_active' => 1,
     );
-    return $this->db->set($data)->where($this->primary, $id)->update($this->_table);
+    return $this->db->set($data)->where($this->primary,$id)->update($this->_table);
   }
 
   public function delete($id)
   {
-    $this->db->where('id', $id)->delete($this->_table);
-    if ($this->db->affected_rows() > 0) {
-      $this->session->set_flashdata("Success", "Data user Berhasil DiDelete");
+    $this->db->where('id',$id)->delete($this->_table);
+    if($this->db->affected_rows()>0){
+      $this->session->set_flashdata("Success","Data user Berhasil DiDelete");
     }
-  }
-
-  public function logout()
-  {
-    $this->session->sess_destroy();
-    redirect(site_url('login'));
-  }
-
-  public function block()
-  {
-    $data = array(
-      'user' => infologin(),
-      'title' => 'Access Denied!'
-    );
-    $this->load->view('login/eror404', $data);
   }
 }
